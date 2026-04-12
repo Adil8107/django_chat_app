@@ -3,7 +3,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-123456")
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'channels',
     'chat',
     'users',
@@ -29,11 +30,11 @@ DATABASES = {
 
 ASGI_APPLICATION = "core.asgi.application"
 
+# ✅ FIXED FOR RENDER
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {"hosts": [("redis", 6379)]},
-    },
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
 }
 
 STATIC_URL = "/static/"
